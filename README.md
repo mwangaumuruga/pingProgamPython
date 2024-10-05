@@ -29,7 +29,7 @@ This script allows you to ping a specified domain or IP address to check network
 
 3. **Run the script:**
     ```
-    python3 ping_script.py
+    python3 pingProgramPython.py
     ```
 
 4. **Change the host** (optional):
