@@ -1,41 +1,51 @@
-# This script uses the subproc
-ess module to run the ping command on a specified host.
-# It returns the output of the ping command, which includes the number of successful ping responses.
 #!/usr/bin/python3
-import os       # Provides a way to interact with the operating system
-import platform # Used to get information about the operating system (OS)
-import subprocess  # Allows running external commands (e.g., ping)
+import os
+import platform
+import subprocess
+import tkinter as tk
+from tkinter import messagebox, scrolledtext
 
-
+# Ping function
 def ping(host):
-    # Determine the command parameter based on the operating system.
-    # 'platform.system()' tells us the type of OS (e.g., Windows, Linux, MacOS).
-    # On Windows, the ping command uses the '-n' flag, while Linux/Mac use '-c' to define the number of ping requests.
     param = "-n" if platform.system().lower() == "windows" else "-c"
-
-    # Build the ping command: it's a list of arguments
-    # Example for Linux: ['ping', '-c', '4', 'google.com']
-    # Example for Windows: ['ping', '-n', '4', 'google.com']
-    
     command = ["ping", param, "4", host]
-
-    # Execute the command using subprocess.run(). It runs the ping command as if you typed it into the terminal.
-    # 'stdout' captures the output of the command (successful ping responses).
-    # 'stderr' captures errors or warnings.
-    # 'text=True' makes sure the output is in string format rather than bytes.
     return subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-# This section only runs if the script is executed directly (not imported as a module in another script).
-if __name__ == "__main__":
-    host = "google.com"  # Host to ping. You can replace this with any domain or IP address.
+# Handle ping from GUI input
+def perform_ping():
+    host = host_entry.get().strip()
+    if not host:
+        messagebox.showwarning("Input Error", "Please enter a hostname or IP address.")
+        return
     
-    # Call the ping function to ping the specified host.
+    result_text.delete(1.0, tk.END)  # Clear previous results
     response = ping(host)
-
-    # Check if the ping command was successful.
+    
     if response.returncode == 0:
-        print(f"Ping to {host} was successful.")
-        print(response.stdout)  # Print the details of the successful ping.
+        result_text.insert(tk.END, f"Ping to {host} was successful.\n\n")
+        result_text.insert(tk.END, response.stdout)
     else:
-        print(f"Ping to {host} failed.")
-        print(response.stderr)  # Print the error message if ping failed.
+        result_text.insert(tk.END, f"Ping to {host} failed.\n\n")
+        result_text.insert(tk.END, response.stderr)
+
+# Create the GUI window
+window = tk.Tk()
+window.title("Ping Tool")
+window.geometry("600x400")
+window.resizable(False, False)
+
+# Input field
+tk.Label(window, text="Enter host (e.g. google.com or 8.8.8.8):").pack(pady=10)
+host_entry = tk.Entry(window, width=50)
+host_entry.pack()
+
+# Button
+ping_button = tk.Button(window, text="Ping Host", command=perform_ping)
+ping_button.pack(pady=10)
+
+# Result box
+result_text = scrolledtext.ScrolledText(window, width=70, height=15)
+result_text.pack(pady=10)
+
+# Run the GUI event loop
+window.mainloop()
