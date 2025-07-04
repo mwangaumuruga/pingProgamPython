@@ -5,6 +5,7 @@ import os       # Provides a way to interact with the operating system
 import platform # Used to get information about the operating system (OS)
 import subprocess  # Allows running external commands (e.g., ping)
 
+
 def ping(host):
     # Determine the command parameter based on the operating system.
     # 'platform.system()' tells us the type of OS (e.g., Windows, Linux, MacOS).
