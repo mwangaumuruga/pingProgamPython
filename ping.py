@@ -1,4 +1,5 @@
-# This script uses the subprocess module to run the ping command on a specified host.
+# This script uses the subproc
+ess module to run the ping command on a specified host.
 # It returns the output of the ping command, which includes the number of successful ping responses.
 #!/usr/bin/python3
 import os       # Provides a way to interact with the operating system
