@@ -15,6 +15,7 @@ def ping(host):
     # Build the ping command: it's a list of arguments
     # Example for Linux: ['ping', '-c', '4', 'google.com']
     # Example for Windows: ['ping', '-n', '4', 'google.com']
+    
     command = ["ping", param, "4", host]
 
     # Execute the command using subprocess.run(). It runs the ping command as if you typed it into the terminal.
