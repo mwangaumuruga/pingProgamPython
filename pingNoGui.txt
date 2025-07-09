@@ -1,0 +1,48 @@
+#!/usr/bin/python3
+"""
+ping_cli.py
+A simple Python script to ping a host and display the result in the terminal.
+
+Compatible with Linux, macOS, and Windows.
+
+Author: codekartel (Parrot OS)
+Date: July 2025
+"""
+
+import platform       # Detects the OS type
+import subprocess     # Runs the ping command
+
+def ping(host):
+    """
+    Pings the given host using 4 packets.
+    
+    Parameters:
+        host (str): The hostname or IP address to ping.
+    
+    Returns:
+        subprocess.CompletedProcess: Contains stdout, stderr, and return code.
+    """
+    # Use the correct flag depending on OS
+    param = "-n" if platform.system().lower() == "windows" else "-c"
+    command = ["ping", param, "4", host]
+
+    return subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+if __name__ == "__main__":
+    # Get host from user input
+    host = input("Enter the host to ping (e.g. google.com or 8.8.8.8): ").strip()
+    
+    if not host:
+        print("No host provided. Exiting.")
+        exit(1)
+
+    # Perform the ping
+    response = ping(host)
+
+    # Show results
+    if response.returncode == 0:
+        print(f"\nPing to {host} was successful.\n")
+        print(response.stdout)
+    else:
+        print(f"\nPing to {host} failed.\n")
+        print(response.stderr)
