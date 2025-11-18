@@ -38,3 +38,5 @@ This script allows you to ping a specified domain or IP address to check network
    Example:
    ```python
    host = "example.com"  # Change 'example.com' to the host of your choice.
+
+   
